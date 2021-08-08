@@ -1,4 +1,4 @@
-import * as p5 from 'p5';
+import p5 from 'p5';
 
 let screenSize = window.innerHeight * 0.75;
 let tileSize = screenSize / 8;
@@ -37,22 +37,22 @@ function resizeBoard(resizeValue: number) {
 
 function loadAllFiles() {
   checkSound = p5.loadSound('./assets/sounds/check.mp3');
-  moveSound = loadSound('./assets/sounds/move-sound.wav');
-  deathSound = loadSound('./assets/sounds/death-sound.mp3');
+  moveSound = p5.loadSound('./assets/sounds/move-sound.wav');
+  deathSound = p5.loadSound('./assets/sounds/death-sound.mp3');
   spriteMapper = {
-    black_king: loadImage('./assets/pieces/' + 'b_king_svg_NoShadow.png'),
-    black_bishop: loadImage('./assets/pieces/' + 'b_bishop_svg_NoShadow.png'),
-    black_knight: loadImage('./assets/pieces/' + 'b_knight_svg_NoShadow.png'),
-    black_pawn: loadImage('./assets/pieces/' + 'b_pawn_svg_NoShadow.png'),
-    black_rook: loadImage('./assets/pieces/' + 'b_rook_svg_NoShadow.png'),
-    black_queen: loadImage('./assets/pieces/' + 'b_queen_svg_NoShadow.png'),
+    black_king: p5.loadImage('./assets/pieces/' + 'b_king_svg_NoShadow.png'),
+    black_bishop: p5.loadImage('./assets/pieces/' + 'b_bishop_svg_NoShadow.png'),
+    black_knight: p5.loadImage('./assets/pieces/' + 'b_knight_svg_NoShadow.png'),
+    black_pawn: p5.loadImage('./assets/pieces/' + 'b_pawn_svg_NoShadow.png'),
+    black_rook: p5.loadImage('./assets/pieces/' + 'b_rook_svg_NoShadow.png'),
+    black_queen: p5.loadImage('./assets/pieces/' + 'b_queen_svg_NoShadow.png'),
 
-    white_king: loadImage('./assets/pieces/' + 'w_king_svg_NoShadow.png'),
-    white_bishop: loadImage('./assets/pieces/' + 'w_bishop_svg_NoShadow.png'),
-    white_knight: loadImage('./assets/pieces/' + 'w_knight_svg_NoShadow.png'),
-    white_pawn: loadImage('./assets/pieces/' + 'w_pawn_svg_NoShadow.png'),
-    white_rook: loadImage('./assets/pieces/' + 'w_rook_svg_NoShadow.png'),
-    white_queen: loadImage('./assets/pieces/' + 'w_queen_svg_NoShadow.png')
+    white_king: p5.loadImage('./assets/pieces/' + 'w_king_svg_NoShadow.png'),
+    white_bishop: p5.loadImage('./assets/pieces/' + 'w_bishop_svg_NoShadow.png'),
+    white_knight: p5.loadImage('./assets/pieces/' + 'w_knight_svg_NoShadow.png'),
+    white_pawn: p5.loadImage('./assets/pieces/' + 'w_pawn_svg_NoShadow.png'),
+    white_rook: p5.loadImage('./assets/pieces/' + 'w_rook_svg_NoShadow.png'),
+    white_queen: p5.loadImage('./assets/pieces/' + 'w_queen_svg_NoShadow.png')
   };
 }
 
@@ -88,8 +88,8 @@ function restartGame() {
 }
 
 function mousePressed() {
-  var x = floor(mouseX / tileSize);
-  var y = floor(mouseY / tileSize);
+  var x = p5.floor(mouseX / tileSize);
+  var y = p5.floor(mouseY / tileSize);
   if (!moving) {
     if (board.isPieceAt(x, y)) {
       movingPiece = board.getPieceAt(x, y);
