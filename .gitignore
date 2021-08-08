@@ -1,6 +1,6 @@
 # Node modules
 node_modules
-dist
+# dist
 
 # Adonis directory for storing tmp files
 tmp/**/*
@@ -23,7 +23,7 @@ public/*/**
 coverage
 
 
-**/*.js
+# **/*.js
 **/*.map
 **/*.d.ts
 tsconfig.tsbuildinfo
