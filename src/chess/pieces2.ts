@@ -1,10 +1,10 @@
-const TEAM = {
+export const TEAM = {
   WHITE: 'white',
   BLACK: 'black'
 };
 
 class Piece {
-  constructor(x, y, team, board) {
+  constructor(x: number, y: number, team: any, board: any) {
     this.matrixPosition = createVector(x, y);
     this.pixelPosition = createVector(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2);
 
