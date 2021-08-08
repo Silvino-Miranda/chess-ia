@@ -23,8 +23,8 @@ public/*/**
 coverage
 
 
-dist/**/*.js
-**/*.js
+# dist/**/*.js
+**/**/**/*.js
 # **/*.map
 # **/*.d.ts
 tsconfig.tsbuildinfo
