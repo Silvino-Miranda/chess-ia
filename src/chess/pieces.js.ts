@@ -3,10 +3,27 @@ const TEAM = {
   BLACK: 'black'
 };
 
+// Helper function to create vectors before p5.js is fully loaded
+function makeVector(x: number, y: number) {
+  return { x, y, dist: function(other: any) { return Math.sqrt((this.x - other.x)**2 + (this.y - other.y)**2); } };
+}
+
 class Piece {
-  constructor(x, y, team, board) {
-    this.matrixPosition = createVector(x, y);
-    this.pixelPosition = createVector(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2);
+  matrixPosition: any;
+  pixelPosition: any;
+  firstMovement: boolean;
+  taken: boolean;
+  team: any;
+  movingThisPiece: boolean;
+  canJump: boolean;
+  sprite: any;
+  spriteSize: number;
+  board: any;
+  value: number;
+
+  constructor(x: any, y: any, team: any, board: any) {
+    this.matrixPosition = makeVector(x, y);
+    this.pixelPosition = makeVector(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2);
 
     this.firstMovement = true;
     this.taken = false;
@@ -18,7 +35,7 @@ class Piece {
     this.board = board;
   }
 
-  isMatrixPositionAt(x, y) {
+  isMatrixPositionAt(x: any, y: any) {
     return this.matrixPosition.x == x && this.matrixPosition.y == y;
   }
 
@@ -51,8 +68,8 @@ class Piece {
           return;
         }
       }
-      this.matrixPosition = createVector(x, y);
-      this.pixelPosition = createVector(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2);
+      this.matrixPosition = makeVector(x, y);
+      this.pixelPosition = makeVector(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2);
       this.firstMovement = false;
       // moveSound.play();
       board.pass();
@@ -61,15 +78,15 @@ class Piece {
 
   die() {
     this.taken = true;
-    this.matrixPosition = createVector(-1, -1);
-    this.pixelPosition = createVector(-100, -100);
+    this.matrixPosition = makeVector(-1, -1);
+    this.pixelPosition = makeVector(-100, -100);
   }
 
-  isInsideMatrix(x, y) {
+  isInsideMatrix(x: any, y: any) {
     return x < 8 && x >= 0 && y < 8 && y >= 0;
   }
 
-  canMove(x, y, board) {
+  canMove(x: any, y: any, board: any) {
     if (this.isInsideMatrix(x, y)) {
       if (!this.moveThroughPieces(x, y, board)) {
         if (board.isPieceAt(x, y) == this.isEnemy(board.getPieceAt(x, y))) {
@@ -89,7 +106,7 @@ class Piece {
     }
 
     let piecePosition = this.matrixPosition;
-    this.matrixPosition = createVector(x, y);
+    this.matrixPosition = makeVector(x, y);
 
     let result = !this.kingInCheck(board);
 
@@ -122,7 +139,7 @@ class Piece {
       stepDirectionY = -1;
     }
 
-    let tempPos = createVector(this.matrixPosition.x, this.matrixPosition.y);
+    let tempPos = makeVector(this.matrixPosition.x, this.matrixPosition.y);
     tempPos.x += stepDirectionX;
     tempPos.y += stepDirectionY;
     while (!(tempPos.x == x && tempPos.y == y) && this.isInsideMatrix(tempPos.x, tempPos.y)) {
@@ -171,7 +188,7 @@ class Piece {
         var y = j;
         if (!this.isMatrixPositionAt(x, y)) {
           if (this.canMove(x, y, board) && this.isNotSuicideMove(x, y, board)) {
-            moves.push(createVector(x, y));
+            moves.push(makeVector(x, y));
           }
         }
       }
@@ -192,7 +209,11 @@ class Piece {
 }
 
 class King extends Piece {
-  constructor(x, y, team, board) {
+  isInCheck: boolean;
+  value: number;
+  didCastling: boolean;
+
+  constructor(x: any, y: any, team: any, board: any) {
     super(x, y, team, board);
     this.isInCheck = false;
     this.value = 800;
@@ -230,20 +251,20 @@ class King extends Piece {
       let newRookPosition;
       switch (x) {
         case 2:
-          rookPosition = createVector(0, y);
-          newRookPosition = createVector(3, y);
+          rookPosition = makeVector(0, y);
+          newRookPosition = makeVector(3, y);
           break;
         case 6:
-          rookPosition = createVector(7, y);
-          newRookPosition = createVector(5, y);
+          rookPosition = makeVector(7, y);
+          newRookPosition = makeVector(5, y);
           break;
       }
       let rook = board.getPieceAt(rookPosition.x, rookPosition.y);
       if (rook != null) {
         if (board.canDoCastling(this, rook, newRookPosition)) {
           rook.move(newRookPosition.x, newRookPosition.y, board);
-          this.matrixPosition = createVector(x, y);
-          this.pixelPosition = createVector(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2);
+          this.matrixPosition = makeVector(x, y);
+          this.pixelPosition = makeVector(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2);
           this.firstMovement = false;
           this.didCastling = true;
           // moveSound.play();
@@ -253,7 +274,7 @@ class King extends Piece {
   }
 
   canMove(x, y, board) {
-    let oneTileMove = this.matrixPosition.dist(createVector(x, y)) < 2;
+    let oneTileMove = this.matrixPosition.dist(makeVector(x, y)) < 2;
     if (oneTileMove) {
       if (this.isKingSafeDistance(x, y, board)) {
         return super.canMove(x, y, board);
@@ -275,12 +296,12 @@ class King extends Piece {
 
   isKingSafeDistance(x, y, board) {
     let enemyKingMatrixPosition = board.getKing(board.getEnemyTeam(this.team)).matrixPosition;
-    return enemyKingMatrixPosition.dist(createVector(x, y)) >= 2;
+    return enemyKingMatrixPosition.dist(makeVector(x, y)) >= 2;
   }
 }
 
 class Queen extends Piece {
-  constructor(x, y, team, board) {
+  constructor(x: any, y: any, team: any, board: any) {
     super(x, y, team, board);
     this.value = 9;
     switch (team) {
@@ -315,7 +336,7 @@ class Queen extends Piece {
 }
 
 class Rook extends Piece {
-  constructor(x, y, team, board) {
+  constructor(x: any, y: any, team: any, board: any) {
     super(x, y, team, board);
     this.value = 5;
     switch (team) {
@@ -339,7 +360,7 @@ class Rook extends Piece {
 }
 
 class Bishop extends Piece {
-  constructor(x, y, team, board) {
+  constructor(x: any, y: any, team: any, board: any) {
     super(x, y, team, board);
     this.value = 3;
     switch (team) {
@@ -364,7 +385,7 @@ class Bishop extends Piece {
 }
 
 class Knight extends Piece {
-  constructor(x, y, team, board) {
+  constructor(x: any, y: any, team: any, board: any) {
     super(x, y, team, board);
     this.value = 3;
     this.canJump = true;
@@ -391,7 +412,11 @@ class Knight extends Piece {
 }
 
 class Pawn extends Piece {
-  constructor(x, y, team, board) {
+  value: number;
+  enPassant: boolean;
+  countMovements: number;
+
+  constructor(x: any, y: any, team: any, board: any) {
     super(x, y, team, board);
     this.value = 1;
 
@@ -436,8 +461,8 @@ class Pawn extends Piece {
         this.enPassant = true;
       }
 
-      this.matrixPosition = createVector(x, y);
-      this.pixelPosition = createVector(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2);
+      this.matrixPosition = makeVector(x, y);
+      this.pixelPosition = makeVector(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2);
       this.firstMovement = false;
       // moveSound.play();
       if (this.countMovements >= 6) {
@@ -484,7 +509,7 @@ class Pawn extends Piece {
     }
   }
 
-  canEnPassant(x, y, board) {
+  canEnPassant(x: any, y: any, board: any) {
     let pawnDirection = this.pawnDirection();
 
     if (!board.isEnemyPieceAt(x, y - pawnDirection, this)) return false;
@@ -502,3 +527,4 @@ class Pawn extends Piece {
     return clone;
   }
 }
+

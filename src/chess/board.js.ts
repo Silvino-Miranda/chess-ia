@@ -7,6 +7,12 @@ const GameStatus = {
 };
 
 class Board {
+  pieces: any;
+  turn: any;
+  nullPiece: any;
+  gameStatus: any;
+  gamePassEvent: any;
+
   constructor() {
     this.pieces = {
       [TEAM.WHITE]: [],
@@ -15,7 +21,7 @@ class Board {
     this.setupPieces();
     this.initEvents();
     this.turn = TEAM.WHITE;
-    this.nullPiece = new Piece(null, null, null);
+    this.nullPiece = new Piece(null, null, null, null);
     this.gameStatus = GameStatus.PLAYING;
   }
 

@@ -1,7 +1,13 @@
 class BoardData {
-  constructor(pieces, score, turn, gameStatus) {
+  pieces: any;
+  score: number;
+  turn: any;
+  gameStatus: any;
+  lastMove: any;
+
+  constructor(pieces?: any, score?: number, turn?: any, gameStatus?: any) {
     this.pieces = pieces;
-    this.score = 0;
+    this.score = score || 0;
     this.turn = turn;
     this.gameStatus = gameStatus;
     this.lastMove = null;

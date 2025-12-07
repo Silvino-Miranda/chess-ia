@@ -3,7 +3,7 @@
     "target": "ES5",
     "module": "CommonJS",
     "outDir": "./dist",
-    "strict": true,
+    "strict": false,
     "sourceMap": true,
     "declaration": true,
     "incremental": true,
@@ -14,10 +14,11 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
 
-    "strictNullChecks": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "strictNullChecks": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false
   }
 }

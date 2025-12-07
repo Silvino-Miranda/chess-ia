@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>P5.js Test</title>
+</head>
+<body>
+    <h1>Testing P5.js</h1>
+    <div id="test"></div>
+    <script src="assets/js/p5/p5.js"></script>
+    <script>
+        console.log('P5.js loaded:', typeof p5);
+        console.log('createCanvas available:', typeof createCanvas);
+        
+        function setup() {
+            console.log('Setup called!');
+            let canvas = createCanvas(400, 400);
+            canvas.parent('test');
+            background(220);
+        }
+        
+        function draw() {
+            console.log('Draw called!');
+            fill(255, 0, 0);
+            ellipse(200, 200, 100, 100);
+            noLoop();
+        }
+    </script>
+</body>
+</html>

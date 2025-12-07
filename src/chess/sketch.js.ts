@@ -1,16 +1,21 @@
+// Função auxiliar para criar vetores simples
+function makeVector(x: number, y: number) {
+  return { x, y };
+}
+
 let screenSize = window.innerHeight * 0.75;
 let tileSize = screenSize / 8;
 
-let board;
+let board: any;
 let moving = false;
-let movingPiece;
-let sprite;
-let spriteMapper;
-let deathSound;
-let moveSound;
-let checkSound;
+let movingPiece: any;
+let sprite: any;
+let spriteMapper: any;
+let deathSound: any;
+let moveSound: any;
+let checkSound: any;
 
-function resizeBoard(resizeValue) {
+function resizeBoard(resizeValue: any) {
   screenSize *= resizeValue;
   tileSize = (screenSize - 50) / 8;
 }

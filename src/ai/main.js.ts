@@ -14,13 +14,13 @@ async function handleBoard(board) {
   boardData = boardData.clone();
   let bestBoardData;
 
-  let depthLevel = +document.getElementById('depth-level-input').value;
+  let depthLevel = +(document.getElementById('depth-level-input') as HTMLInputElement).value;
 
   if (board.countPossibleMovements(board.turn) > 0) {
     if (board.turn == TEAM.BLACK) {
-      bestBoardData = minimaxFunAB(boardData, (isMax = false), -Infinity, +Infinity, depthLevel);
+      bestBoardData = minimaxFunAB(boardData, false, -Infinity, +Infinity, depthLevel);
     } else if (board.turn == TEAM.WHITE) {
-      bestBoardData = minimaxFunAB(boardData, (isMax = true), -Infinity, +Infinity, depthLevel);
+      bestBoardData = minimaxFunAB(boardData, true, -Infinity, +Infinity, depthLevel);
     }
 
     board
@@ -31,7 +31,7 @@ async function handleBoard(board) {
 
 function generateMoves(board, team) {
   let alivePieces = board.pieces[team].filter((pieces) => !pieces.taken);
-  moves = alivePieces.map((piece) => {
+  let moves = alivePieces.map((piece) => {
     return { origin: piece.matrixPosition, destinations: piece.generateMoves(board) };
   });
 
@@ -61,7 +61,7 @@ function generateBoardsData(boardData) {
     });
   });
   if (boardsData.length == 0) {
-    checkMateBoard = boardData.clone();
+    let checkMateBoard = boardData.clone();
     checkMateBoard.mapperToBoard(virtualBoard);
     virtualBoard.getKing(checkMateBoard.turn).die();
     return [checkMateBoard];
